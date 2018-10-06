@@ -6,16 +6,16 @@
 #include "calc.h"
 
 /* init_calc Initialize calculator
- */
+*/
 void init_calc(struct calc_state * cs) {
-	for(int idx=0;idx<STACK_SIZE;idx++) (*cs).stack[idx] = NAN;
-	for(int idx=0;idx<REG_SIZE;idx++) (*cs).reg[idx] = NAN;
+    for(int idx=0;idx<STACK_SIZE;idx++) (*cs).stack[idx] = NAN;
+    for(int idx=0;idx<REG_SIZE;idx++) (*cs).reg[idx] = NAN;
     (*cs).n_stack = 0;
     return;
 }
 
 /* daprint print the first 5 of a list of doubles
- */
+*/
 void daprint(double * da) {
     printf("\n");
     for(int idx=0;idx<5;idx++) printf("%f,\n",da[idx]);
@@ -32,7 +32,7 @@ void str_rep(char * str, char * rep, char a, char b) {
     int nlen = strlen(str);
     for(int idx=0;idx<nlen;idx++) {
         if(a == str[idx]) rep[idx] = b; 
-	else rep[idx] = str[idx];
+        else rep[idx] = str[idx];
     }
 }
 
@@ -52,15 +52,15 @@ void str_rep(char * str, char * rep, char a, char b) {
         ((0==x) && (STACK_SIZE==x))) {\
     printf("BAD STACK\n");\
     return -1; \
-    } 
+} 
 #define PUSH(x) S[NS] = x; \
-        NS = NS + 1;
+                        NS = NS + 1;
 #define POP S[NS-1] = NAN; \
-        NS = NS-1;
+                      NS = NS-1;
 
 int process_token(char * token, struct calc_state * cs) {
     printf("Token: \"%s\"\n", token);
-    
+
     if(strcmp(token, "") == 0) return 0;
     /* -----------------------
      * Stack, register control
@@ -68,8 +68,8 @@ int process_token(char * token, struct calc_state * cs) {
     // Delete last thing on stack
     else if(strcmp(token, "x") == 0) { 
         CHECK_STACK(2)
-        POP	
-        return 0;
+            POP	
+            return 0;
     }
     // Save to register 
     /* Usage: X, to be saved, is on the top of the stack.
@@ -78,16 +78,16 @@ int process_token(char * token, struct calc_state * cs) {
      */
     else if(strcmp(token, "z") == 0) { 
         CHECK_STACK(2)
-        int idx = round(S[NS-1]);
+            int idx = round(S[NS-1]);
         POP
-        if(!((0<=idx)&&(idx<REG_SIZE))) { 
-            printf("BAD REGISTER\n");
-            return -1;
-        }
+            if(!((0<=idx)&&(idx<REG_SIZE))) { 
+                printf("BAD REGISTER\n");
+                return -1;
+            }
         double d = S[NS-2];
         R[idx] = d;
         POP
-        return 0;
+            return 0;
     }
     // Yank from register
     /* Usage: X, to be yanked, is in register A.
@@ -96,14 +96,14 @@ int process_token(char * token, struct calc_state * cs) {
      */
     else if(strcmp(token, "y") == 0) { 
         CHECK_STACK(1)
-        int idx = round(S[NS-1]);
+            int idx = round(S[NS-1]);
         POP
-        if(!((0<=idx)&&(idx<REG_SIZE))) { 
-            printf("BAD REGISTER\n");
-            return -1;
-        }
+            if(!((0<=idx)&&(idx<REG_SIZE))) { 
+                printf("BAD REGISTER\n");
+                return -1;
+            }
         PUSH(R[idx])
-        return 0;
+            return 0;
     }
     // Print stack
     else if(strcmp(token, "p") == 0) { 
@@ -119,37 +119,37 @@ int process_token(char * token, struct calc_state * cs) {
     // Addition
     else if(strcmp(token, "a") == 0) { 
         CHECK_STACK(2)
-        S[NS-2] = S[NS-1] + S[NS-2];
+            S[NS-2] = S[NS-1] + S[NS-2];
         POP
-        return 0;
+            return 0;
     } 
     // Negation
     else if(strcmp(token, "t") == 0) { 
         CHECK_STACK(1)
-        S[NS-1] = -S[NS-1];
+            S[NS-1] = -S[NS-1];
         return 0;
     }
     // Multiplication
     else if(strcmp(token, "m") == 0) { 
         CHECK_STACK(2)
-        S[NS-2] = S[NS-1]*S[NS-2];
+            S[NS-2] = S[NS-1]*S[NS-2];
         POP
-        return 0;
+            return 0;
     }
     // Division
     /* Usage: A is on top, above B. 
      * Run "d" to pop A,B, push B/A.
      */
-        else if(strcmp(token, "d") == 0) { 
+    else if(strcmp(token, "d") == 0) { 
         CHECK_STACK(2)
-        S[NS-2] = S[NS-1]/S[NS-2];
+            S[NS-2] = S[NS-1]/S[NS-2];
         POP
-        return 0;
+            return 0;
     }
     // Abs
     else if(strcmp(token, "ab") == 0) { 
         CHECK_STACK(1)
-        S[NS-1] = abs(S[NS-1]);
+            S[NS-1] = abs(S[NS-1]);
         return 0;
     }
 
@@ -162,32 +162,32 @@ int process_token(char * token, struct calc_state * cs) {
      */
     else if(strcmp(token, "pw") == 0) { 
         CHECK_STACK(2)
-        S[NS-2] = pow(S[NS-2],S[NS-1]);
+            S[NS-2] = pow(S[NS-2],S[NS-1]);
         POP
-        return 0;
+            return 0;
     }
     // Exp
     else if(strcmp(token, "exp") == 0) { 
         CHECK_STACK(1)
-        S[NS-1] = exp(S[NS-1]);
+            S[NS-1] = exp(S[NS-1]);
         return 0;
     }
     // Square root
     else if(strcmp(token, "sr") == 0) { 
         CHECK_STACK(1)
-        S[NS-1] = sqrt(S[NS-1]);
+            S[NS-1] = sqrt(S[NS-1]);
         return 0;
     }
     // Natural logarithm
     else if(strcmp(token, "ln") == 0) { 
         CHECK_STACK(1)
-        S[NS-1] = log(S[NS-1]);
+            S[NS-1] = log(S[NS-1]);
         return 0;
     }
     // Log base-10
     else if(strcmp(token, "lg") == 0) { 
         CHECK_STACK(1)
-        S[NS-1] = log10(S[NS-1]);
+            S[NS-1] = log10(S[NS-1]);
         return 0;
     }
 
@@ -197,37 +197,37 @@ int process_token(char * token, struct calc_state * cs) {
     // Sine
     else if(strcmp(token, "sn") == 0) { 
         CHECK_STACK(1)
-        S[NS-1] = sin(S[NS-1]);
+            S[NS-1] = sin(S[NS-1]);
         return 0;
     }
     // Cosine 
     else if(strcmp(token, "cs") == 0) { 
         CHECK_STACK(1)
-        S[NS-1] = cos(S[NS-1]);
+            S[NS-1] = cos(S[NS-1]);
         return 0;
     }
     // Tangent 
     else if(strcmp(token, "tn") == 0) { 
         CHECK_STACK(1)
-        S[NS-1] = tan(S[NS-1]);
+            S[NS-1] = tan(S[NS-1]);
         return 0;
     }
     // Arcsine 
     else if(strcmp(token, "asn") == 0) { 
         CHECK_STACK(1)
-        S[NS-1] = asin(S[NS-1]);
+            S[NS-1] = asin(S[NS-1]);
         return 0;
     }
     // Arccosine 
     else if(strcmp(token, "acs") == 0) { 
         CHECK_STACK(1)
-        S[NS-1] = acos(S[NS-1]);
+            S[NS-1] = acos(S[NS-1]);
         return 0;
     }
     // Arctangent 
     else if(strcmp(token, "atn") == 0) { 
         CHECK_STACK(1)
-        S[NS-1] = atan(S[NS-1]);
+            S[NS-1] = atan(S[NS-1]);
         return 0;
     }
 
@@ -237,23 +237,23 @@ int process_token(char * token, struct calc_state * cs) {
     // Binary Shannon entropy (bits)
     else if(strcmp(token, "h") == 0) { 
         CHECK_STACK(1)
-        if((S[NS-1]<0) || (S[NS-1]>1)) {
-            S[NS-1] = NAN;
-            return 0;
-        }
+            if((S[NS-1]<0) || (S[NS-1]>1)) {
+                S[NS-1] = NAN;
+                return 0;
+            }
         if((S[NS-1]==0) || (S[NS-1]==1)) {
             S[NS-1] = 0;
             return 0;
         }
         S[NS-1] = (1/log(2))* \
-            -S[NS-1]*log(S[NS-1]) \
-            -(1-S[NS-1])*log(1-S[NS-1]);
+                  -S[NS-1]*log(S[NS-1]) \
+                  -(1-S[NS-1])*log(1-S[NS-1]);
         return 0;
     }
     // Log base-2  
     else if(strcmp(token, "lg2") == 0) { 
         CHECK_STACK(1)
-        S[NS-1] = log(S[NS-1])/log(2);
+            S[NS-1] = log(S[NS-1])/log(2);
         return 0;
     }
 
@@ -263,14 +263,14 @@ int process_token(char * token, struct calc_state * cs) {
     // Euler's constant
     else if(strcmp(token, "e") == 0) { 
         CHECK_STACK(0)
-        PUSH(M_E)        
-        return 0;
+            PUSH(M_E)        
+            return 0;
     }
     // Pi
     else if(strcmp(token, "pi") == 0) { 
         CHECK_STACK(0)
-        PUSH(M_PI)        
-        return 0;
+            PUSH(M_PI)        
+            return 0;
     }
 
     // Try and convert to double, add to stack.
@@ -292,8 +292,8 @@ int process_token(char * token, struct calc_state * cs) {
     if(td == cfail) return -1;
     else {
         CHECK_STACK(0)
-        PUSH(dc)
-        return 0;
+            PUSH(dc)
+            return 0;
     }
 }
 

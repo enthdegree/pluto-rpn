@@ -4,25 +4,25 @@
 #include "mc.h"
 
 #define CLEAR_BUFFER {\
-	memset(b, '\0', 6);\
-	idx = 0;\
-	printf("Buffer: %s\n",b);\
-	continue;\
-	}
+    memset(b, '\0', 6);\
+    idx = 0;\
+    printf("Buffer: %s\n",b);\
+    continue;\
+}
 
 /* mc_dec Decode a Morse code string
  * Input: b = Null-terminated string containing up to 5 '.' and '-'
  * Output: c = Character b represents, or '\0' if not a Morse code. 
  */
 char mc_dec(char b[6]) {
-	const char DEC_KEY[] = "\0 etianmsurwdkgohvf\0l\0pjbxcyzq\0\0\x35\x34\0\x33\0\0\0\x32\0\0\0\0\0\0\0\x31\x36\0\0\0\0\0\0\0\x37\0\0\0\x38\0\x39\x30\0\0\0\0\0\0\0\0\0\0\0\0?\0\0\0\0\0\0\0\0.\0\0\0\0\0\0\0\0\0\0\0-\0\0\0\0\0\0\0\0\0!\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
-	int pos = 1;
-	for(int idx=0; idx<6; idx++) {
-		if('.' == b[idx]) pos = 2*pos;
-		else if('-' == b[idx]) pos = 2*pos+1;
-		else if(!b[idx]) break;
-	}
-	return DEC_KEY[pos];
+    const char DEC_KEY[] = "\0 etianmsurwdkgohvf\0l\0pjbxcyzq\0\0\x35\x34\0\x33\0\0\0\x32\0\0\0\0\0\0\0\x31\x36\0\0\0\0\0\0\0\x37\0\0\0\x38\0\x39\x30\0\0\0\0\0\0\0\0\0\0\0\0?\0\0\0\0\0\0\0\0.\0\0\0\0\0\0\0\0\0\0\0-\0\0\0\0\0\0\0\0\0!\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
+    int pos = 1;
+    for(int idx=0; idx<6; idx++) {
+        if('.' == b[idx]) pos = 2*pos;
+        else if('-' == b[idx]) pos = 2*pos+1;
+        else if(!b[idx]) break;
+    }
+    return DEC_KEY[pos];
 }
 
 /* mc_listen Listen for Morse code from STDIN.
@@ -38,24 +38,24 @@ char mc_dec(char b[6]) {
  * Output: char representing a decoding of a Morse code.
  */
 char mc_listen() {
-	char b[6];
-	memset(b, '\0', 6);
-	int idx = 0;
-	while(1) {
-		char in = getchar();
-		if(('.' == in)||
-		   ('-' == in)) {
-			if(idx == 6) CLEAR_BUFFER
-			b[idx] = in;
-			idx = (idx+1)%6;
-			printf("Buffer: %s\n",b);
-		}
-		else if('x' == in) {
-			char c = mc_dec(b);
-			if(!c) CLEAR_BUFFER
-			return c;
-		}
-	}
+    char b[6];
+    memset(b, '\0', 6);
+    int idx = 0;
+    while(1) {
+        char in = getchar();
+        if(('.' == in)||
+                ('-' == in)) {
+            if(idx == 6) CLEAR_BUFFER
+                b[idx] = in;
+            idx = (idx+1)%6;
+            printf("Buffer: %s\n",b);
+        }
+        else if('x' == in) {
+            char c = mc_dec(b);
+            if(!c) CLEAR_BUFFER
+                return c;
+        }
+    }
 }
 
 

@@ -1,5 +1,5 @@
 /* calc.h Calculator internals 
- */
+*/
 
 #define STACK_SIZE 16
 #define REG_SIZE 4 
@@ -11,11 +11,11 @@ struct calc_state {
 };
 
 /* daprint print the first 5 of a list of doubles
- */
+*/
 void daprint(double * da);
 
 /* init_calc Initialize calculator
- */
+*/
 void init_calc(struct calc_state * cs);
 
 /* str_rep Replace all instances of a with b in str (stop at null)
