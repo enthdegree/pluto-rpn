@@ -10,9 +10,21 @@ struct calc_state {
     int n_stack; 
 };
 
+/* daprint print the first 5 of a list of doubles
+ */
+void daprint(double * da);
+
 /* init_calc Initialize calculator
  */
 void init_calc(struct calc_state * cs);
+
+/* str_rep Replace all instances of a with b in str (stop at null)
+ * Input: str = initial string
+ * rep = replacement location
+ * a = original char
+ * b = thing to replace a with
+ */
+void str_rep(char * str, char * rep, char a, char b);
 
 /* process_token Process the stack in the way specified by the token.
  * Otherwise, try to convert it to a double and add it to the stack.
