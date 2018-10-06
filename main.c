@@ -23,12 +23,15 @@
  * processing. As per the definition of `process_token in `calc.c`, the 
  * calculator interprets the buffer input "4e2dt3" as the double 4.2e-3, and 
  * adds it to the RPN calculator stack. 
- * 	The next line submits the token "exp" into to the calculator, causing the calculator to process the top of the stack with the math function `exp()`:
+ * The next line submits the token "exp" into to the calculator, causing the
+ * calculator to process the top of the stack with the math function `exp()`:
  * 	Input: ".x-..-x.--.xx\n"
- * The next line submits the token "p" to the calculator, which causes it to print the top few entries in the stack:
+ * The next line submits the token "p" to the calculator, which causes it to 
+ * print the top few entries in the stack:
  * 	Input: ".--.xx\n"
  *
- * For a complete list of calculator functions see the body of `process_token` in `calc.c`
+ * For a complete list of calculator functions see the body of `process_token` 
+ * in `calc.c`
  */
 #include <stdio.h>
 #include <string.h>
