@@ -3,12 +3,23 @@
 
 #define STACK_SIZE 16
 #define REG_SIZE 4 
+#define TOKEN_SIZE 24
 
 struct calc_state {
     double stack[STACK_SIZE];
     double reg[REG_SIZE];
+    char token[TOKEN_SIZE];
+    int tidx;
     int n_stack; 
 };
+
+/* input_to_calc Input a character to the calculator
+ * Control chars:
+ *      'v', 'w'
+ *
+ * Input: c = char to add to the token
+ */
+void input_to_calc(struct calc_state * cs, char c);
 
 /* daprint print the first 5 of a list of doubles
 */

@@ -8,35 +8,20 @@
 #include "mc.h"
 #include "calc.h"
 
-#define TOKEN_SIZE 32
 
 int main() {
     struct calc_state cs;
+    struct mc_buffer mcb;
     init_calc(&cs);
+    init_mc_buffer(&mcb);
 
-    char t[TOKEN_SIZE];
-    memset(t, '\0', TOKEN_SIZE);
-    int idx_t = 0;
     while(1) {
-        char c = mc_listen();
-        if(' ' == c) {
-            process_token(t, &cs);
-            t[0] = '\0';
-            idx_t = 0;
+        char c = getchar();
+	    if('x' == c ) {
+            char d;
+            mc_writechar(&mcb, &d);
+            input_to_calc(&cs, d);
         }
-        // 'v', as in 'view', is a control character to replay the current input
-        else if('v' == c) {
-            printf("%s_\n", t);
-        }
-        // 'w', as in 'wipe', is a control character to delete the last typed char
-        else if('w' == c) {
-            if(idx_t > 0) idx_t = idx_t-1;
-            t[idx_t] = '\0';
-        }
-        else { 
-            t[idx_t] = c;
-            t[idx_t+1] = '\0';
-            idx_t = (idx_t+1)%(TOKEN_SIZE-1);
-        }
+        else mc_read(&mcb, c);
     }
 }

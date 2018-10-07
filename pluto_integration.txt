@@ -1,0 +1,24 @@
+Changes made to pluto-fw to integrate this rpn code
+-----
+
+pluto-fw is event based, so when a button is pressed app code is called with the event passed in.
+
+The main loop of rpn is structured to process a stream of button inputs.
+
+- Added rpn app to `app/`
+    - Added `rpn/` folder to `app/` containing: 
+        - `app.c`, the app's main loop 
+        - `sources.mk` with line `SRC += ../common/app/rpn/app.c` 
+    - Added reference to `app_t` struct for rpn in `app/apps.h`: `extern const app_t app_app_rpn;`
+    - Added rpn item to launcher in `app/launcher/app.c`
+
+- Added rpn service to `svc/`
+    - Added `rpn/` folder to `svc/` containing:
+        - internals of rpn that the main loop will call 
+        - `sources.mk` with `SRC += (.c files to compile in this folder)`
+    - Added `rpn.h` to `svc/`, wrapping all the functions in `rpn/` that the rpn service will provide to the main loop
+    - Added `rpn.c` to `svc/`, implementing all these functions (mostly calling code inside rpn/)
+    - Added reference to `svc/rpn.h` in `svc/svc.h`
+    - Added reference to `svc/rpn.h` in `svc/sources.mk`
+
+- Updated main loop in `/app/rpn/app.c` to call wrapped functions from `/svc/rpn.h`.
